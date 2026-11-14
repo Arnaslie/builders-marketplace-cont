@@ -24,4 +24,4 @@ WORKDIR /app/api
 EXPOSE 8000
 
 # --port $PORT is expanded by Railway at runtime; default 8000 locally.
-CMD .venv/bin/uvicorn app.main:app --host 0.0.0.0 --port "${PORT:-8000}"
+CMD ["sh", "-c", ".venv/bin/uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
