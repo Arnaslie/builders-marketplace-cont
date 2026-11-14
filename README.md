@@ -67,7 +67,7 @@ The app is split across two hosts (Vercel for the web, Railway for the FastAPI A
 | Service | Host | Build | Start / Runtime |
 |---|---|---|---|
 | Web (Next.js) | Vercel | `npm ci && npm run build` | Vercel runs `npm start` on the Node runtime |
-| API (FastAPI) | Railway | `pip install uv==0.12.24 && cd api && uv sync --locked --no-dev` | `cd api && .venv/bin/uvicorn app.main:app --host 0.0.0.0 --port $PORT` |
+| API (FastAPI) | Railway | `Dockerfile` (repo root): builds `python:3.12`, `uv sync --locked --no-dev` | `.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port $PORT` (set `$PORT` at runtime) |
 
 The FastAPI service needs to stay running (it holds the in-memory cart and order state), so it belongs
 on Railway's always-on container hosting, not on Vercel's function runtime. Set the API's
