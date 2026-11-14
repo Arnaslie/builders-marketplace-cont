@@ -6,7 +6,7 @@
   "summary": "A two-shelf cart that holds a welder and a gas bottle. Build the tool that makes the next builds easier.",
   "difficulty": "intermediate",
   "estimatedHours": 10,
-  "imageUrl": null,
+  "imageUrl": "/projects/rolling-welding-cart.jpg",
   "currency": "USD",
   "steps": [
     "Measure your welder's footprint and your gas bottle's diameter and height first. The sizes below suit a 140 A MIG machine and an 80 cu ft bottle; change the shelf size before you cut anything, not after.",

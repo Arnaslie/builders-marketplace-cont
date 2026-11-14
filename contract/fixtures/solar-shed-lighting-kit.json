@@ -6,7 +6,7 @@
   "summary": "A 30 W panel, battery and LED strip so the shed has light with no cable from the house.",
   "difficulty": "intermediate",
   "estimatedHours": 5,
-  "imageUrl": null,
+  "imageUrl": "/projects/solar-shed-lighting-kit.jpg",
   "currency": "USD",
   "steps": [
     "Pick the panel spot: the roof or wall facing the equator (south in the northern hemisphere), tilted at roughly your latitude, with no shade from 10 am to 2 pm. The battery is sealed AGM rather than lithium because an unheated shed gets cold, and lithium (LiFePO4) batteries must not be charged below freezing.",

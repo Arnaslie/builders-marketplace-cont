@@ -6,7 +6,7 @@
   "summary": "An ESP32 sensor that texts you when the beds are dry. A gentle first step into microcontrollers.",
   "difficulty": "intermediate",
   "estimatedHours": 4,
-  "imageUrl": null,
+  "imageUrl": "/projects/soil-moisture-monitor.jpg",
   "currency": "USD",
   "steps": [
     "Install the Arduino IDE and the ESP32 board package, plug in the ESP32 and upload the Blink example to confirm the board and USB driver work.",
