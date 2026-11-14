@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { PayPalCheckout } from "../../components/paypal-checkout";
+import { CheckoutStub } from "../../components/checkout-stub";
 import { ApiError, getProject, priceCart, usingApi, type Cart } from "../../lib/api/client";
 import { cartRequestFromParams } from "../../lib/cart-link";
 import { formatMoney } from "../../lib/money";
@@ -127,12 +127,12 @@ export default async function CartPage({ searchParams }: Props) {
             </p>
           )}
           <hr />
-          <h2>Pay with PayPal</h2>
+          <h2>Checkout</h2>
           <p>
-            You pay Builders Marketplace once for the whole cart. Orders with the individual retailers are simulated for this
-            demo; nothing will be shipped.
+            Payment is being replaced with a Stripe integration and is not available yet. The cart is
+            priced above; nothing will be charged.
           </p>
-          <PayPalCheckout request={request} />
+          <CheckoutStub />
         </>
       )}
     </main>
