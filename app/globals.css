@@ -148,21 +148,6 @@ pre {
   margin: 0 0 var(--space-4);
 }
 
-/* Finished-build thumbnail atop each index row. Bordered like the banner so it reads as
-   part of the retro list, not a page photo. */
-.index-image {
-  display: block;
-  max-width: 100%;
-  margin: 0 0 var(--space-2);
-}
-.index-image img {
-  border: 1px solid var(--color-muted);
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  display: block;
-}
-
 .index-summary,
 .index-particulars {
   margin: 0.35em 0 0;
@@ -278,12 +263,36 @@ a:visited .banner {
   color: var(--color-muted);
 }
 
-/* Project page */
-.thumb {
-  display: block;
+/* Project page: the finished-build picture sits in the blank space beside the title,
+   so the catalogue never ships it and only one image is served per project view. */
+.project-header {
+  display: flow-root; /* contains the floated image */
+}
+
+.project-header-text {
+  margin-right: 272px; /* 250px image + 8px margin + a little breathing room */
+}
+
+.project-header .thumb {
+  float: right;
+  width: 250px;
   max-width: 100%;
   height: auto;
-  border: 0;
+  margin: 0 0 8px 8px;
+  border: 1px solid var(--color-muted);
+}
+
+@media (max-width: 30rem) {
+  /* On tiny phones the 250px image would crowd the whole title block, so the header
+     stacks: the picture returns to full flow above the text. */
+  .project-header-text {
+    margin-right: 0;
+  }
+  .project-header .thumb {
+    float: none;
+    display: block;
+    margin: 0 0 var(--space-3);
+  }
 }
 
 .steps li {

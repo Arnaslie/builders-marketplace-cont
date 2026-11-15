@@ -23,15 +23,20 @@ export default async function ProjectPage({ params }: Props) {
 
   return (
     <main>
-      <h1>{project.title}</h1>
-      {/* Only a real picture is shown; a lettered placeholder would not belong on a 1994 page. */}
-      {project.imageUrl && <ProjectImage title={project.title} imageUrl={project.imageUrl} />}
-      <p>{project.summary}</p>
-      <ul>
-        <li>Difficulty: {project.difficulty}</li>
-        <li>Time: {project.estimatedHours} hours</li>
-        <li>Items: {project.materials.length}</li>
-      </ul>
+      {/* The finished-build picture floats beside the title so it reads as part of the
+           centred listing header, not a page hero: one small image, 250px wide. */}
+      <div className="project-header">
+        <div className="project-header-text">
+          <h1>{project.title}</h1>
+          <p>{project.summary}</p>
+          <ul>
+            <li>Difficulty: {project.difficulty}</li>
+            <li>Time: {project.estimatedHours} hours</li>
+            <li>Items: {project.materials.length}</li>
+          </ul>
+        </div>
+        {project.imageUrl && <ProjectImage title={project.title} imageUrl={project.imageUrl} />}
+      </div>
       <hr />
 
       {/* The licence key is read here, at request time, so a change on Render needs no rebuild. */}

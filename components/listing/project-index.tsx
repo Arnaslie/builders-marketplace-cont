@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { formatMoney } from "../../lib/money";
-import { ProjectImage } from "../project-image";
 import { Banner } from "./banner";
 import type { ListingViewProps } from "./types";
 
@@ -14,9 +13,6 @@ export function ProjectIndex({ projects, offset }: ListingViewProps) {
         const number = offset + index + 1;
         return (
           <li key={project.id}>
-            <Link href={`/projects/${project.slug}`} className="index-image">
-              <ProjectImage title={project.title} imageUrl={project.imageUrl} />
-            </Link>
             <Link href={`/projects/${project.slug}`} className="index-link">
               <Banner number={number} variant="ivory" />{" "}
               <span className="index-title">{project.title}</span>
