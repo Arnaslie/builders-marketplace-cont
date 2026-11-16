@@ -1,0 +1,82 @@
+# Redeploy the Railway service on every push to main.
+# `railway up` ships the full tree from the checked-out repo, which is
+# correct — the root Dockerfile COPYs the whole repo so contract/fixtures
+# resolve at runtime, and any part of the repo may drive a redeploy.
+name: Deploy Railway
+
+on:
+  push:
+    branches: [main]
+  # Re-run a deploy by hand (e.g. after setting SVC_ID) without an empty commit.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-railway-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Pinned on purpose: `latest` moves under us, and v5.3.0 shipped a project-token
+  # auth regression that broke `railway up` for RAILWAY_TOKEN in CI.
+  RAILWAY_CLI_VERSION: "5.74.1"
+  # Railway: open the project > the API service > Settings > Service ID. Not a
+  # secret, but per-project, so it must be filled in before this workflow can run.
+  SVC_ID: "c48c1033-bc43-4d08-b39e-2fd85d81fbe4"
+  # Public Railway domain of the API service, used for the post-deploy smoke check.
+  API_URL: "https://builders-marketplace-cont-production.up.railway.app"
+
+jobs:
+  deploy:
+    name: railway up (full tree)
+    runs-on: ubuntu-latest
+    env:
+      # Project token from Railway (project > Settings > Tokens). The CLI reads it
+      # from the environment and skips interactive login.
+      RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+    steps:
+      - uses: actions/checkout@v7
+
+      # Fail with the fix spelled out, instead of letting `railway up` die on a
+      # shell parse error: an unquoted `<SERVICE_ID>` is a redirect, not an
+      # argument, so the step reports "syntax error: unexpected newline".
+      - name: Check deploy configuration
+        run: |
+          if [ -z "$RAILWAY_TOKEN" ]; then
+            echo "::error::RAILWAY_TOKEN is empty. Add the Railway project token under Settings > Secrets and variables > Actions > New repository secret, named RAILWAY_TOKEN."
+            exit 1
+          fi
+          if [ -z "$SVC_ID" ] || [ "$SVC_ID" = "<SERVICE_ID>" ]; then
+            echo "::error::SVC_ID is still the placeholder. Copy it from Railway (project > API service > Settings > Service ID) into the SVC_ID line of .github/workflows/deploy-railway.yml."
+            exit 1
+          fi
+          echo "Deploying to service $SVC_ID"
+
+      # Not `container: ghcr.io/railwayapp/cli:latest`: that image is Alpine/musl and
+      # carries no node or glibc, so actions/checkout@v7 cannot execute inside it.
+      # Installing the pinned static binary on the normal runner keeps checkout and
+      # curl working.
+      - name: Install Railway CLI
+        run: |
+          curl -fsSL "https://github.com/railwayapp/cli/releases/download/v${RAILWAY_CLI_VERSION}/railway-v${RAILWAY_CLI_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
+            | sudo tar xz -C /usr/local/bin railway
+          railway --version
+
+      # --ci streams build logs and exits; the step's exit code is the deploy status.
+      - name: railway up
+        run: railway up --service "$SVC_ID" --ci --message "$GITHUB_SHA"
+
+      # The deploy is only done when the service answers, not when the build passes.
+      - name: Smoke check /healthz
+        run: |
+          for i in $(seq 1 36); do
+            code=$(curl -s --max-time 10 -o /dev/null -w '%{http_code}' "$API_URL/healthz" || true)
+            if [ "$code" = "200" ]; then
+              echo "/healthz returned 200 after ${i} attempt(s)"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "::error::$API_URL/healthz did not return 200 within 180s — check the Railway deploy log."
+          exit 1
