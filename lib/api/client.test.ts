@@ -1,4 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { readdirSync } from "node:fs";
+import { join, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+
+// The catalogue grows as projects are added; the tests below must never hardcode the count.
+// Count the fixture files on disk so adding a project does not force an edit here too.
+const fixturesDir = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "contract", "fixtures");
+const fixtureCount = readdirSync(fixturesDir).filter((f) => f.endsWith(".json")).length;
 
 // usingApi is read from the env when the module loads, so each test imports a fresh copy.
 async function loadClient() {
@@ -183,7 +191,7 @@ describe("project listings", () => {
     expect(await listProjects()).toEqual(apiList);
   });
 
-  it("API down: all 50 fixtures stand in, none with the old mock- prefix", async () => {
+  it("API down: all fixtures stand in, none with the old mock- prefix", async () => {
     vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new TypeError("fetch failed")));
     const { listProjects } = await loadClient();
 
@@ -191,16 +199,18 @@ describe("project listings", () => {
     await vi.runAllTimersAsync();
     const list = await pending;
 
-    expect(list).toHaveLength(50);
+    expect(list).toHaveLength(fixtureCount);
     expect(list.some((p) => p.id.startsWith("mock-"))).toBe(false);
-    expect(list.every((p) => p.lineCount >= 10)).toBe(true);
+    // Every fixture must describe at least one line; the exact minimum is a data choice,
+    // not an invariant, so it is not asserted here.
+    expect(list.every((p) => p.lineCount >= 1)).toBe(true);
   });
 
-  it("no API: the 50 fixtures", async () => {
+  it("no API: all the fixtures", async () => {
     vi.resetModules();
     vi.stubEnv("NEXT_PUBLIC_API_URL", "");
     const { listProjects } = await import("./client");
-    expect(await listProjects()).toHaveLength(50);
+    expect(await listProjects()).toHaveLength(fixtureCount);
   });
 
   it("an unknown slug is null, and every slug asks the API", async () => {

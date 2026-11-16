@@ -1,0 +1,80 @@
+{
+  "id": "proj-shoe-shelf",
+  "slug": "shoe-shelf",
+  "status": "published",
+  "title": "Entryway Shoe Shelf",
+  "summary": "A two-tier pine shoe rack that sits on the floor by the door, with a raised back to stop scuffs.",
+  "difficulty": "beginner",
+  "estimatedHours": 2,
+  "imageUrl": null,
+  "currency": "USD",
+  "steps": [
+    "Cut two side panels at 24 in long and three shelf boards at 28 in long from the pine.",
+    "Drill pocket holes in the shelf ends and screw the lower shelf to the sides 4 in off the floor.",
+    "Screw the top shelf in place 12 in above the lower one.",
+    "Add the short back panel behind each shelf so shoes cannot scuff the wall.",
+    "Sand everything to 120 grit and brush on a coat of furniture oil."
+  ],
+  "materials": [
+    {
+      "id": "ss-pine",
+      "name": "1 in x 6 in x 8 ft pine board",
+      "qty": 2,
+      "unit": "board",
+      "category": "material",
+      "channel3ProductId": null,
+      "price": "6.98",
+      "currency": "USD",
+      "retailer": "The Home Depot",
+      "productUrl": "https://www.homedepot.com/s/1%20in%20x%206%20in%20x%208%20ft%20pine%20board",
+      "imageUrl": null,
+      "ownedDefault": false,
+      "alternatives": []
+    },
+    {
+      "id": "ss-screws",
+      "name": "1 1/4 in wood screws, 200 pack",
+      "qty": 1,
+      "unit": "box",
+      "category": "material",
+      "channel3ProductId": null,
+      "price": "8.98",
+      "currency": "USD",
+      "retailer": "The Home Depot",
+      "productUrl": "https://www.homedepot.com/s/1%201%204%20in%20wood%20screws%20200%20pack",
+      "imageUrl": null,
+      "ownedDefault": false,
+      "alternatives": []
+    },
+    {
+      "id": "ss-oil",
+      "name": "Furniture oil, 8 oz",
+      "qty": 1,
+      "unit": "can",
+      "category": "material",
+      "channel3ProductId": null,
+      "price": "9.98",
+      "currency": "USD",
+      "retailer": "The Home Depot",
+      "productUrl": "https://www.homedepot.com/s/furniture%20oil%208%20oz",
+      "imageUrl": null,
+      "ownedDefault": false,
+      "alternatives": []
+    },
+    {
+      "id": "ss-drill",
+      "name": "20V cordless drill/driver kit",
+      "qty": 1,
+      "unit": "each",
+      "category": "tool",
+      "channel3ProductId": null,
+      "price": "99.00",
+      "currency": "USD",
+      "retailer": "The Home Depot",
+      "productUrl": "https://www.homedepot.com/s/20v%20cordless%20drill%20driver%20kit",
+      "imageUrl": null,
+      "ownedDefault": true,
+      "alternatives": []
+    }
+  ]
+}
