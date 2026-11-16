@@ -89,7 +89,12 @@ export function ProjectImageIcon({ title, slug, lineCount, number }: Props) {
       xmlns="http://www.w3.org/2000/svg"
     >
       <rect width="100%" height="100%" fill="#ffffff" />
-      {lines.join("")}
+      {/* The blueprint strokes: without this group the line/path/rect primitives have no
+          stroke attribute or rule, so they render invisible against the white fill — a
+          blank white square. The group supplies the black outline so the drawing shows. */}
+      <g stroke="#111111" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
+        {lines.join("")}
+      </g>
       {number != null && (
         <g transform={`translate(${lx(78)} ${ly(12)})`}>
           <rect x="0" y="0" width="14" height="14" fill={plateFill} stroke="#000000" strokeWidth="1" />

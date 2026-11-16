@@ -23,6 +23,16 @@ describe("ProjectImage two-tier", () => {
     // The caption derives from the project data, not a model call.
     expect(html).toContain('ADIRONDACK CHAIR');
     expect(html).toContain('aria-label="Illustration for Adirondack Chair"');
+    // Regression guard: the drawing must be VISIBLE. Without a stroke on the
+    // line/path/rect primitives they render invisible against the white fill,
+    // producing the "blank white square" bug. The blueprint group must carry the
+    // stroke so the glyph actually draws.
+    expect(html).toContain('stroke="#111111"');
+    // React serializes the JSX strokeWidth/strokeLinecap camelCase props to the
+    // DOM's kebab-case stroke-width / stroke-linecap attributes.
+    expect(html).toContain('stroke-width="1.5"');
+    expect(html).toContain('stroke-linecap="round"');
+    expect(html).toContain('stroke-linejoin="round"');
   });
 
   it("is deterministic: same project draws the same glyph both times", () => {
