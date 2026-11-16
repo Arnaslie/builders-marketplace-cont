@@ -33,6 +33,14 @@ describe("ProjectImage two-tier", () => {
     expect(html).toContain('stroke-width="1.5"');
     expect(html).toContain('stroke-linecap="round"');
     expect(html).toContain('stroke-linejoin="round"');
+    // Regression guard: the svg must carry its own explicit width/height attributes.
+    // The container div sets aspect-ratio, but that does NOT cascade to the svg; with
+    // only a viewBox and CSS `width:100%; height:auto`, a width/height-less svg collapses
+    // its height to 0 — the drawing then occupies a zero-height box inside the bordered
+    // placeholder and is invisible (the "blank box" bug). The svg's own width/height
+    // attributes give it intrinsic dimensions so `height:auto` resolves to the 4:3 size.
+    expect(html).toContain('width="250"');
+    expect(html).toContain('height="188"');
   });
 
   it("is deterministic: same project draws the same glyph both times", () => {

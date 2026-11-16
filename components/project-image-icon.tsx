@@ -83,6 +83,8 @@ export function ProjectImageIcon({ title, slug, lineCount, number }: Props) {
   return (
     <svg
       className="thumb-icon"
+      width={width}
+      height={height}
       viewBox={`0 0 ${width} ${height}`}
       role="img"
       aria-label={`Illustration for ${title}`}
