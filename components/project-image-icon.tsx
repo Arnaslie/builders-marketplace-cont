@@ -105,7 +105,7 @@ export function ProjectImageIcon({ title, slug, lineCount, number }: Props) {
       )}
       <text
         x={4}
-        y={height - 5}
+        y={height - 10}
         fontSize={Math.max(9, Math.min(13, 200 / Math.max(title.length, 8)))}
         fontFamily="Times, serif"
         fill="#444444"
