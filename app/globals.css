@@ -273,13 +273,23 @@ a:visited .banner {
   margin-right: 272px; /* 250px image + 8px margin + a little breathing room */
 }
 
-.project-header .thumb {
+.project-header .thumb,
+.project-header .thumb-placeholder {
   float: right;
   width: 250px;
   max-width: 100%;
   height: auto;
   margin: 0 0 8px 8px;
   border: 1px solid var(--color-muted);
+  background: #ffffff;
+}
+
+/* The free deterministic SVG fills its slot; the number plate and caption inherit
+   from the glyph, so no extra layout work is needed here. */
+.project-header .thumb-placeholder .thumb-icon {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 @media (max-width: 30rem) {
@@ -288,7 +298,8 @@ a:visited .banner {
   .project-header-text {
     margin-right: 0;
   }
-  .project-header .thumb {
+  .project-header .thumb,
+  .project-header .thumb-placeholder {
     float: none;
     display: block;
     margin: 0 0 var(--space-3);

@@ -35,7 +35,15 @@ export default async function ProjectPage({ params }: Props) {
             <li>Items: {project.materials.length}</li>
           </ul>
         </div>
-        {project.imageUrl && <ProjectImage title={project.title} imageUrl={project.imageUrl} />}
+        {/* Photoreal tier if the project has earned one, else the free deterministic SVG.
+            Rendering unconditionally is the scaling point: even a project with no photoreal
+            image still shows a card visual at zero generation cost. */}
+        <ProjectImage
+          title={project.title}
+          slug={project.slug}
+          lineCount={project.materials.length}
+          imageUrl={project.imageUrl}
+        />
       </div>
       <hr />
 
