@@ -41,6 +41,15 @@ describe("ProjectImage two-tier", () => {
     // attributes give it intrinsic dimensions so `height:auto` resolves to the 4:3 size.
     expect(html).toContain('width="250"');
     expect(html).toContain('height="188"');
+    // Regression guard: the primitives must render as REAL svg elements, not as
+    // escaped text. Building the drawing with `lines.join("")` (a markdown string)
+    // made React serialize `<line .../>` as the literal-escaped text
+    // `&lt;line ...&gt;` inside the <g> — so nothing drew and the box stayed blank.
+    // With real elements in the array, the html must contain an actual `<line ` or
+    // `<path ` node (not `&lt;line`), so the glyph is genuinely visible.
+    expect(html).toMatch(/<(line|path|rect)\b/);
+    expect(html).not.toContain("&lt;line");
+    expect(html).not.toContain("&lt;path");
   });
 
   it("is deterministic: same project draws the same glyph both times", () => {

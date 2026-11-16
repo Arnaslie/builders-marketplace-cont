@@ -8,6 +8,9 @@
 // The look matches the site's 1994 retro-terminal language: flat, ruled, no fill except a
 // single accent plate for the project number plate.
 
+import { cloneElement } from "react";
+import type { ReactElement } from "react";
+
 type Props = { title: string; slug: string; lineCount: number; number?: number };
 
 // A small, stable PRNG seeded from the slug so every project draws its own variant but
@@ -49,9 +52,11 @@ export function ProjectImageIcon({ title, slug, lineCount, number }: Props) {
   // A dirty-plastic plate for the number, echoing the seals/banners used elsewhere.
   const plateFill = number ? "#fffff0" : "#ffffff";
 
-  const lines: string[] = [];
+  const lines: ReactElement[] = [];
   const lx = (x: number) => (x / 100) * width;
   const ly = (y: number) => (y / 100) * height;
+  let key = 0;
+  const push = (el: ReactElement) => lines.push(cloneElement(el, { key: key++ }));
 
   if (bowl) {
     // A vessel: two walls and a curve across the mouth.
@@ -59,22 +64,22 @@ export function ProjectImageIcon({ title, slug, lineCount, number }: Props) {
     const x0 = (100 - w) / 2;
     const h = 26 + rand() * 14;
     const yb = 76;
-    lines.push(`<path d="M ${x0} ${yb - h} L ${x0} ${yb} Q 50 ${yb + 14 * rand()} ${100 - x0} ${yb} L ${100 - x0} ${yb - h}" />`);
-    lines.push('<path d="M 18 52 Q 50 44 82 52" />');
+    push(<path d={`M ${x0} ${yb - h} L ${x0} ${yb} Q 50 ${yb + 14 * rand()} ${100 - x0} ${yb} L ${100 - x0} ${yb - h}`} />);
+    push(<path d="M 18 52 Q 50 44 82 52" />);
   } else if (peak) {
     // A gabled structure: roof peak plus a ridgeline and door.
-    lines.push(`<path d="M 14 76 L 50 ${46 - rand() * 8} L 86 76" />`);
-    lines.push('<path d="M 24 76 L 50 54 L 76 76" opacity="0.7" />');
-    lines.push('<rect x="44" y="62" width="12" height="14" />');
+    push(<path d={`M 14 76 L 50 ${46 - rand() * 8} L 86 76`} />);
+    push(<path d="M 24 76 L 50 54 L 76 76" opacity="0.7" />);
+    push(<rect x="44" y="62" width="12" height="14" />);
   } else {
     // A frame/stand: posts and slats, like a chair or shelf.
     for (let i = 0; i < posts; i++) {
       const x = 22 + (i * 28) + rand() * 4;
-      lines.push(`<line x1="${x}" y1="${30 + rand() * 6}" x2="${x}" y2="78" />`);
+      push(<line x1={x} y1={30 + rand() * 6} x2={x} y2={78} />);
     }
     for (let i = 0; i < battens; i++) {
       const y = 38 + i * 9;
-      lines.push(`<line x1="18" y1="${y}" x2="82" y2="${y}" />`);
+      push(<line x1={18} y1={y} x2={82} y2={y} />);
     }
   }
 
@@ -95,7 +100,7 @@ export function ProjectImageIcon({ title, slug, lineCount, number }: Props) {
           stroke attribute or rule, so they render invisible against the white fill — a
           blank white square. The group supplies the black outline so the drawing shows. */}
       <g stroke="#111111" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
-        {lines.join("")}
+        {lines}
       </g>
       {number != null && (
         <g transform={`translate(${lx(78)} ${ly(12)})`}>
