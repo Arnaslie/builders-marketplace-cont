@@ -43,6 +43,8 @@ export default async function ProjectPage({ params }: Props) {
           slug={project.slug}
           lineCount={project.materials.length}
           imageUrl={project.imageUrl}
+          steps={project.steps}
+          materials={project.materials.map((m) => ({ name: m.name, category: m.category }))}
         />
       </div>
       <hr />

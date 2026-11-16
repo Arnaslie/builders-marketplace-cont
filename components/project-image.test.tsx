@@ -67,4 +67,56 @@ describe("ProjectImage two-tier", () => {
     );
     expect(a).not.toBe(b);
   });
+
+  it("draws from the project's construction steps (blueprint of the real build)", () => {
+    // The STEPS describe the build, so the gate draws a gate: uprights, rails and a brace.
+    const steps = [
+      "Cut the two rails and three uprights from cedar, then lay them on a flat surface and clamp.",
+      "Set the diagonal brace from the bottom hinge corner to the top latch corner so the gate self-squares.",
+      "Screw the brace into the uprights then screw the rails to the uprights.",
+      "Cut the two posts, set them plumb in concrete.",
+      "Hang the gate on heavy galvanised hinges and fit a drop rod so the latch is not the only keeper.",
+    ];
+    const html = renderToStaticMarkup(
+      <ProjectImage title="Cedar Gate" slug="cedar-gate" lineCount={9} imageUrl={null} steps={steps} />
+    );
+    // A step-derived gate draws 3 uprights (vertical lines, one per picket) ...
+    expect(html).toMatch(/<line /);
+    // ... and the plan group scales into the 250x188 viewBox (not a zero-size box).
+    expect(html).toContain('transform="translate(6 5) scale(2.38 1.52)"');
+    // The caption derives from the project's own title, not a model call.
+    expect(html).toContain("CEDAR GATE");
+  });
+
+  it("draws different recognisable plans for different project kinds", () => {
+    const gateSteps = [
+      "Cut the two rails and three uprights from cedar.",
+      "Set the diagonal brace so the gate self-squares.",
+    ];
+    const tableSteps = [
+      "Cut the top, four legs and six aprons to the small dimensions.",
+      "Screw the legs to the aprons, then screw the aprons under the table top.",
+    ];
+    const gate = renderToStaticMarkup(
+      <ProjectImage title="Gate" slug="my-gate" lineCount={6} imageUrl={null} steps={gateSteps} />
+    );
+    const table = renderToStaticMarkup(
+      <ProjectImage title="Table" slug="my-table" lineCount={6} imageUrl={null} steps={tableSteps} />
+    );
+    // Both are drawings, neither is an <img>.
+    expect(gate).toContain('<svg');
+    expect(table).toContain('<svg');
+    // A gate and a table are not byte-identical: they are recognisably different plans.
+    expect(gate).not.toBe(table);
+  });
+
+  it("for an empty material list falls back to the seeded abstract shape, still drawn", () => {
+    const html = renderToStaticMarkup(
+      <ProjectImage title="Sole" slug="sole" lineCount={4} imageUrl={null} materials={[]} />
+    );
+    expect(html).toContain('<svg');
+    expect(html).toContain('stroke="#111111"');
+    expect(html).toMatch(/<(line|path|rect)\b/);
+    expect(html).not.toContain("&lt;line");
+  });
 });

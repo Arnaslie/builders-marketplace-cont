@@ -6,18 +6,18 @@
 //    (slug, line count), with ZERO generation cost. Any project shows this instantly.
 // A plain <img> is used on purpose: next/image needs each remote host listed in
 // next.config, and we do not know the image hosts yet.
-import { ProjectImageIcon } from "./project-image-icon";
+import { ProjectImageIcon, type GlyphMaterial } from "./project-image-icon";
 
-type Props = { title: string; slug: string; lineCount: number; number?: number; imageUrl: string | null; ratio?: string };
+type Props = { title: string; slug: string; lineCount: number; number?: number; imageUrl: string | null; ratio?: string; materials?: GlyphMaterial[]; steps?: string[] };
 
-export function ProjectImage({ title, slug, lineCount, number, imageUrl, ratio = "4 / 3" }: Props) {
+export function ProjectImage({ title, slug, lineCount, number, imageUrl, ratio = "4 / 3", materials, steps }: Props) {
   if (imageUrl) {
     // eslint-disable-next-line @next/next/no-img-element
     return <img className="thumb" src={imageUrl} alt="" style={{ aspectRatio: ratio }} />;
   }
   return (
     <div className="thumb-placeholder" style={{ aspectRatio: ratio }} aria-hidden="true">
-      <ProjectImageIcon title={title} slug={slug} lineCount={lineCount} number={number} />
+      <ProjectImageIcon title={title} slug={slug} lineCount={lineCount} number={number} materials={materials} steps={steps} />
     </div>
   );
 }
