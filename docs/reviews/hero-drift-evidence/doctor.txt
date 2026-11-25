@@ -1,0 +1,9 @@
+ok   web process group 140900 alive
+ok   web port 3100 held by pid 140923 (pgid 140900)
+ok   web /healthz -> {"status":"ok"} 200
+ok   web serving build UJET_tj2lC36YEpE1L_cE
+ok   api process group 140905 alive
+ok   api port 3200 held by pid 140905 (pgid 140905)
+ok   api /healthz -> {"status":"ok"} 200
+ok   api /openapi.json matches contract/openapi.json
+info source 33cdef80a409adb3cd2fa3e094e22b62a2b5205d+dirty  web http://127.0.0.1:3100  api http://127.0.0.1:3200  evidence /home/arnas/Desktop/Coding/builders-marketplace-cont/.verify/hero-final/evidence
