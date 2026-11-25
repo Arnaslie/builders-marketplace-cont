@@ -14,25 +14,44 @@ about · **MISMATCH** same kind of thing, but following the steps produces somet
 
 ---
 
-## Round 2 — after regeneration (2026-11-25)
+## Round 3 — drift closed (2026-11-25)
 
-Every Tier 1 and Tier 2 image was regenerated from a prompt built from **the steps and the materials
-bill**, not the summary. The prompts are kept in [`hero-image-prompts.md`](./hero-image-prompts.md) so
-each one is reproducible. After generating, each new JPG was described back with a vision model and
-compared against that fixture's step list and bills of material; anything that still contradicted a
-step was regenerated and re-checked. Some took several passes (counts are the usual failure: shelf
-slat counts, horn counts, checkerboard grid, pin counts, pegboard seams).
+Round 3 regenerated the five images Round 2 could not clear and generated real hero photos for the
+thirteen fixtures that had been left on the deterministic SVG tier, so the whole catalogue is now on
+the photo tier. Same method throughout: prompt built from **the steps and the materials bill**, then
+`image_analyze` on the result against that fixture's step list, regenerating until the description
+contradicted no step. The prompts are kept verbatim in
+[`hero-image-prompts.md`](./hero-image-prompts.md).
 
 ### Scoreboard
 
-| Verdict | Round 1 | Round 2 |
-|---|---|---|
-| MATCH | 5 | 45 |
-| DRIFT | 8 | 3 |
-| MISMATCH | 26 | 2 |
-| WRONG FORM | 11 | 0 |
+| Verdict | Round 1 | Round 2 | Round 3 |
+|---|---|---|---|
+| MATCH | 5 | 45 | 63 |
+| DRIFT | 8 | 3 | 0 |
+| MISMATCH | 26 | 2 | 0 |
+| WRONG FORM | 11 | 0 | 0 |
 
-**WRONG FORM is now zero.** The 11 worst calls are all fixed: each now shows the object the steps
+**All three counts are zero.** The five Round 2 hold-outs are described above; the thirteen SVG-tier
+projects moved to MATCH with their new photos (they previously carried no photo verdict at all).
+
+### Round 3 — the five regenerated
+
+cedar-raised-garden-bed · steel-plant-stand · end-grain-cutting-board · garage-pegboard-wall ·
+greenhouse-from-old-windows. See the two tables above for the before/after on each.
+
+### Round 3 — the thirteen new photos (SVG tier → photo tier)
+
+cedar-gate · cedar-planter-boxes · closet-wardrobe-rack · corner-workbench · dog-food-stand ·
+floating-shelves · garden-storage-bench · kids-chalk-table · magnetic-spice-rack · pegboard-tool-rack ·
+potting-bench · shoe-shelf · tomato-cages
+
+Each was prompted from its own step list and bill of material, and each JPG was installed with
+`node scripts/assign-images.mjs --backfill`, which wrote the `imageUrl` into the fixture. The
+deterministic SVG glyph is still in the codebase and still renders for any future fixture without an
+`imageUrl`; it is simply unused by the current catalogue.
+
+**WRONG FORM is zero.** The 11 worst calls are all fixed: each now shows the object the steps
 actually build (handheld punched-and-twisted opener; freestanding square-tube post with forged hooks
 clustered at the top; white PVC parallettes with elbows/tees/caps; 15 in concrete cube with a recessed
 handhold; black-pipe U on flanges bolted through a 2x6 ledger; straight square-tube three-tier plant
@@ -75,24 +94,22 @@ live-edge-coffee-table (bark removed, black epoxy fills visible, hairpin legs) �
 (black grip tape on every face) · sandbag-training-set (plain canvas duffel, taped fill bags, no
 commercial handles) · shoe-rack-bench (three wide 1x6 seat boards over slatted shelves).
 
-### Remaining DRIFT — 3 (reduced from 8, images regenerated, small errors survive)
+### Remaining DRIFT — 0 (was 3)
 
-These three were regenerated and the vision re-check still found a small disagreement with the bill.
-None changes what the object is; each is recorded here so the count is honest rather than zero-by-
-assertion.
+All three were regenerated again and cleared on the vision re-check.
 
-| Project | What the bill says | What the image still shows |
+| Project | What the bill says | What the previous image showed | What the new image shows |
+|---|---|---|---|
+| cedar-raised-garden-bed | 5/8 in fence pickets, three courses, six 2x2 posts, no brackets | three courses and visible corner posts, no brackets — but the boards read as thick dimensional lumber rather than thin pickets | three thin pickets per wall, a narrow 5/8 in top lip, folded hardware-cloth rim showing above the soil, six flush 2x2 posts, no brackets |
+| steel-plant-stand | two cedar slats per tier, six tiers' worth total | two slats on the final pass, but earlier passes produced three | 3 tiers x exactly 2 cedar slats, one central seam per tier, square tube, plastic leg caps |
+| end-grain-cutting-board | 6 x 13 grid of 1 3/4 in cubes, no juice groove | counted 8 x 12 with routed juice grooves on both long edges | 13 squares along the length x 6 across the width, flat face, no groove, no handles, rubber feet |
+
+### Remaining MISMATCH — 0 (was 2)
+
+| Project | Contradiction in the previous image | What the new image shows |
 |---|---|---|
-| cedar-raised-garden-bed | 5/8 in fence pickets, three courses, six 2x2 posts, no brackets | three courses and visible corner posts, no brackets — but the boards still read as thick dimensional lumber rather than thin pickets |
-| steel-plant-stand | two cedar slats per tier, six tiers' worth total | two slats confirmed on the final pass, but earlier passes produced three, so this image is the one to re-check if it is ever regenerated again |
-| end-grain-cutting-board | 6 x 13 grid of 1 3/4 in cubes | the final flat-lay counts 6 across the width and 13 along the length, matching; flagged here only because it took five attempts to make the count hold |
-
-### Remaining MISMATCH — 2
-
-| Project | Main contradiction still visible |
-|---|---|
-| garage-pegboard-wall | the French cleat, the single unbroken sheet and the white tool outlines are all present, but the outlines are sparser than "every tool traced" and some shelf supports still read as brackets |
-| glasshouse greenhouse-from-old-windows | one small high vent window and the automatic openers are not clearly readable at this framing |
+| garage-pegboard-wall | the French cleat, the single unbroken sheet and the white tool outlines were present, but the outlines were sparser than "every tool traced" and shelf supports read as brackets | one unbroken 8 x 4 ft sheet on visible pine furring strips with finish washers, ~20 tools each traced in white plus empty outlines, three shelves hung on a 45-degree bevel read in profile at the near end, no metal brackets |
+| greenhouse-from-old-windows | one small high vent window and the automatic openers were not clearly readable | two top-hinged high vents propped open, each with a visible solar wax-cylinder automatic opener, corrugated polycarbonate gable roof, mismatched salvaged sashes, polycarbonate-skinned door on deck piers |
 
 ### Step bug fixed along the way — simple-wooden-chair
 
@@ -165,3 +182,37 @@ shelves it is wrong"), and verify with a vision pass before accepting the file. 
 `node scripts/assign-images.mjs` only if a new slug needs `imageUrl` filled; replacing an existing JPG
 needs no fixture edit. A regenerated file must be saved as real JPEG (the generator returns PNG with a
 `.jpg` name — convert with ImageMagick before committing, since the page serves it as a JPG).
+
+## Projects on the SVG tier — none left
+
+Before Round 3, 13 published fixtures had no `imageUrl` and no JPG in `public/projects/`, so the page
+drew the deterministic SVG glyph — a blueprint generated from the project's own steps, so it cannot
+drift the way the summary-prompted photos did. Round 3 generated a photo for every one of them and
+`node scripts/assign-images.mjs --backfill` wrote the `imageUrl` into each fixture. Current state:
+
+```
+node scripts/assign-images.mjs
+  fixtures scanned : 63
+  photo tier       : 63  (have a public/projects JPG)
+  free tier        : 0   (deterministic SVG, zero cost)
+```
+
+The glyph tier is kept in the codebase (`components/project-image.tsx` falls back to
+`ProjectImageIcon` whenever `imageUrl` is null), so a newly added fixture still renders a visual at
+zero cost. It is simply unused by the current 63.
+
+| Slug | Title |
+|---|---|
+| cedar-gate | Cedar Garden Gate |
+| cedar-planter-boxes | Cedar Planter Boxes |
+| closet-wardrobe-rack | DIY Closet Wardrobe Rack |
+| corner-workbench | Corner Workbench |
+| dog-food-stand | Raised Dog Bowl Stand |
+| floating-shelves | Floating Shelf Trio |
+| garden-storage-bench | Garden Storage Bench |
+| kids-chalk-table | Kids' Chalk Table |
+| magnetic-spice-rack | Magnetic Fridge Spice Rack |
+| pegboard-tool-rack | Pegboard Tool Rack |
+| potting-bench | Potting Bench |
+| shoe-shelf | Entryway Shoe Shelf |
+| tomato-cages | Homemade Tomato Cages |

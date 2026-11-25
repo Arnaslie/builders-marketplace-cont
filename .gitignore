@@ -13,7 +13,13 @@ __pycache__/
 # build artifacts and local agent tooling (kept on disk, not tracked)
 tsconfig.tsbuildinfo
 *.tsbuildinfo
-.claude/
+# .claude/ holds local agent settings, which stay untracked. The verification skill under it is
+# part of the review evidence for every PR that touches a page or route, so it IS tracked: a
+# feature file that only exists on one machine cannot be shown to have been followed.
+.claude/*
+!.claude/skills/
+.claude/skills/*
+!.claude/skills/verify-diy-wikipedia/
 # video submission: recorded takes and rendered frame sequences are large and local-only.
 # Keep the scripts, reel definitions and final cut; drop the raw media by default.
 video-submission/takes/

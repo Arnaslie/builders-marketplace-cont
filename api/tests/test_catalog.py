@@ -17,7 +17,9 @@ PROJECTS = [json.loads(path.read_text()) for path in FIXTURES]
 def test_every_fixture_is_listed(client: TestClient) -> None:
     listed = {p["id"] for p in client.get("/projects").json()}
     assert listed == {p["id"] for p in PROJECTS}
-    assert len(listed) == 50
+    # Compare against the fixtures on disk rather than a pinned count, so the catalogue can grow
+    # without editing this test (same rule as the client.test.ts count assertions).
+    assert len(listed) == len(PROJECTS)
 
 
 def test_no_project_id_uses_the_old_mock_prefix() -> None:
